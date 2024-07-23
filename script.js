@@ -6,10 +6,11 @@ document.getElementById('generate-button').addEventListener('click', function() 
 
     container.innerHTML = '';
 
-    let quadratitot;
+     let quadratitot;
     let livello;
-    let gameover = true; // 
-    let punteggio = 0; // punteggio iniziale
+    let gameover = false; // Variabile di stato per il gioco
+    let punteggio = 0; // Variabile per tenere traccia del punteggio
+    const totBombs = 16; // Numero totale di bombe
 
     if (difficulty == 'facile') {
         quadratitot = 100;
@@ -30,7 +31,7 @@ document.getElementById('generate-button').addEventListener('click', function() 
     
     function generateBombs(totalCells) {
         const bombs = [];
-        while (bombs.length < 16) {
+        while (bombs.length < totBombs) {
             const bomb = Math.floor(Math.random() * totalCells) + 1;
             if (!bombs.includes(bomb)) {
                 bombs.push(bomb);
@@ -38,25 +39,32 @@ document.getElementById('generate-button').addEventListener('click', function() 
         }
         return bombs;
     }
+        const maxScore = quadratitot - totBombs; // Punteggio massimo possibile
 
         for (let i = 1; i <= quadratitot; i++) {
         const cell = document.createElement('div');
         cell.classList.add('quadrati', livello);
         cell.textContent = i;
         cell.addEventListener('click', function() {
-            //se clicchi una bomba ferma il gioco perchè gameover va in false e la cellla diventa di colore redddd
+            if (!gameover) { // Controlla se il gioco è ancora in corso
                 if (bombs.includes(i)) {
                     cell.style.backgroundColor = 'red';
                     console.log(`Hai cliccato su una bomba: ${i}`);
-                    gameover = false; // termina il gioco
-                    alert('Hai calpestato una bomba! Game Over.');
+                    gameover = true; // Termina il gioco
+                    alert(`Hai calpestato una bomba! Game Over. Il tuo punteggio è: ${punteggio}`);
                 } 
-            //altrimenti (se non clicchi sulla bomba la cella si colora di blu e aumenti di punteggio)
-                else {
-                    cell.style.backgroundColor = 'blue';
-                    punteggio++; // aumenta di 1 il punteggio
-                    console.log(`Numero di Cella: ${i}. Punteggio: ${punteggio}`);
+                // Controlla se l'utente ha raggiunto il punteggio massimo
+                else if (cell.style.backgroundColor !== 'lightblue') {
+                        cell.style.backgroundColor = 'lightblue';
+                        punteggio++; // Incrementa il punteggio
+                        console.log(`Cella cliccata: ${i}. Punteggio attuale: ${punteggio}`);
                 }
+                        // Controlla se l'utente ha raggiunto il punteggio massimo
+                else if (punteggio == maxScore) {
+                            gameover = true;
+                            alert(`Congratulazioni! Hai perso tempo. Il tuo punteggio è: ${punteggio}`);
+                        }
+                    }
         });
         container.append(cell);
     }
