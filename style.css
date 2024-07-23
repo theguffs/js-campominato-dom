@@ -1,0 +1,15 @@
+.quadrati{
+    height: 100px;
+    border: 1px black solid;
+    background-color:blueviolet;
+    margin: 5px;
+}
+.difficile {
+    width: calc((100% / 10) - 10px);
+}
+.medio {
+    width: calc((100% / 9) - 10px);
+}
+.facile {
+    width: calc((100% / 7) - 10px);
+}
