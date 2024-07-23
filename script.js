@@ -8,7 +8,8 @@ document.getElementById('generate-button').addEventListener('click', function() 
 
     let quadratitot;
     let livello;
-    let gameover = true; 
+    let gameover = true; // 
+    let punteggio = 0; // punteggio iniziale
 
     if (difficulty == 'facile') {
         quadratitot = 100;
@@ -43,17 +44,19 @@ document.getElementById('generate-button').addEventListener('click', function() 
         cell.classList.add('quadrati', livello);
         cell.textContent = i;
         cell.addEventListener('click', function() {
-            if (gameover) {
+            //se clicchi una bomba ferma il gioco perchè gameover va in false e la cellla diventa di colore redddd
                 if (bombs.includes(i)) {
                     cell.style.backgroundColor = 'red';
                     console.log(`Hai cliccato su una bomba: ${i}`);
                     gameover = false; // termina il gioco
                     alert('Hai calpestato una bomba! Game Over.');
-                } else {
-                    cell.style.backgroundColor = 'lightblue';
-                    console.log(`Cella cliccata: ${i}`);
+                } 
+            //altrimenti (se non clicchi sulla bomba la cella si colora di blu e aumenti di punteggio)
+                else {
+                    cell.style.backgroundColor = 'blue';
+                    punteggio++; // aumenta di 1 il punteggio
+                    console.log(`Numero di Cella: ${i}. Punteggio: ${punteggio}`);
                 }
-            }
         });
         container.append(cell);
     }
